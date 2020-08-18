@@ -15,17 +15,18 @@ router.get("/test", (req, res) => res.json({ msg: "users work" }));
 // @access  public
 
 router.post("/register", (req, res) => {
-    console.log('request received at : /register');
-    console.log(`data: ${req.body.email}`);
-    // User.find( { emai: req.body.email }, function(err, result) {
-    //   if (err) {
-    //     res.send(err);
-    //   } else {
-    //     res.send(result);
-    //   }
-    // });
-    User.findOne({email: req.body.email})
-    .then((user) => console.log(`data found! ${user}`));
+  console.log("request received at : /register");
+  console.log(`data: ${req.body.email}`);
+  // User.find( { emai: req.body.email }, function(err, result) {
+  //   if (err) {
+  //     res.send(err);
+  //   } else {
+  //     res.send(result);
+  //   }
+  // });
+  User.findOne({ email: req.body.email }).then((user) =>
+    console.log(`data found! ${user}`)
+  );
 
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
@@ -45,22 +46,15 @@ router.post("/register", (req, res) => {
       console.log(`new user: ${newUser}`);
 
       bcrypt.genSalt(10, (err, salt) => {
-        console.log(`salt created: ${salt}`)
+        console.log(`salt created: ${salt}`);
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           console.log(`hash created: ${hash}`);
-          if (err) {
+          if (hash) {
             newUser.password = hash;
-            newUser.save(function(err, user){
-              if(err){
-                  console.log(err);
-              } else {
-                  console.log(user);
-              }
-          })
-            // newUser
-            //   .save()
-            //   .then((user) => res.json(user))
-            //   .catch((err) => console.log(err));
+            newUser
+              .save()
+              .then((user) => res.json(user))
+              .catch((err) => console.log(err));
           }
         });
       });

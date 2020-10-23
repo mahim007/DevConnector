@@ -3,6 +3,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { registerUser } from "../../actions/authAction";
 
 class Register extends Component {
@@ -35,16 +36,16 @@ class Register extends Component {
       password2: this.state.password2,
     };
 
-    this.props.registerUser(newUser);
+    this.props.registerUser(newUser, this.props.history);
   }
 
-  shouldComponentUpdate(nextProps) {
-    console.log("shouldComponentUpdate called...");
+  componentWillReceiveProps(nextProps) {
+    console.log("component will receive props called...");
     if (nextProps.errors !== this.state.errors) {
       this.setState({ errors: nextProps.errors });
     }
 
-    return nextProps.errors !== this.state.errors;
+    // return nextProps.errors !== this.state.errors;
   }
 
   render() {
@@ -148,4 +149,7 @@ const mapDispatchToProps = {
   registerUser,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Register));

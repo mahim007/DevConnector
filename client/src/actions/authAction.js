@@ -1,8 +1,7 @@
 import Axios from "axios";
-import { decode } from "jsonwebtoken";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
-import { GET_ERRORS, SET_CURRENT_USER, TEST_DISPATCH } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 
 export const registerUser = (userData, history) => (dispatch) => {
   Axios.post("/api/users/register", userData)
@@ -37,4 +36,10 @@ export const setCurrentUser = (decoded) => {
     type: SET_CURRENT_USER,
     payload: decoded,
   };
+};
+
+export const logoutUser = () => (dispatch) => {
+  localStorage.removeItem("jwtToken");
+  setAuthToken(false);
+  dispatch(setCurrentUser({}));
 };

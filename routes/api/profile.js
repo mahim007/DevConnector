@@ -37,6 +37,7 @@ router.get(
           return res.status(404).json(errors);
         }
 
+        console.log("profile found: ", profile);
         res.json(profile);
       })
       .catch((err) => console.log(err));
@@ -126,8 +127,8 @@ router.post(
     if (req.body.location) profileFields.location = req.body.location;
     if (req.body.bio) profileFields.bio = req.body.bio;
     if (req.body.status) profileFields.status = req.body.status;
-    if (req.body.githubusername)
-      profileFields.githubusername = req.body.githubusername;
+    if (req.body.githubUserName)
+      profileFields.githubUserName = req.body.githubUserName;
 
     // skills - split into array
     if (typeof req.body.skills !== "undefined") {
@@ -140,11 +141,12 @@ router.post(
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
-    if (req.body.insatagram)
-      profileFields.social.insatagram = req.body.insatagram;
+    if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
 
+    console.log("profile fields: ", profileFields);
     Profile.findOne({ user: req.user.id })
       .then((profile) => {
+        console.log("profile should be updated: ", profile);
         if (profile) {
           Profile.findOneAndUpdate(
             { user: req.user.id },

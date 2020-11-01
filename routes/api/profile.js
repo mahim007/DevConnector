@@ -121,14 +121,13 @@ router.post(
     const profileFields = {};
 
     profileFields.user = req.user.id;
-    if (req.body.handle) profileFields.handle = req.body.handle;
-    if (req.body.company) profileFields.company = req.body.company;
-    if (req.body.website) profileFields.website = req.body.website;
-    if (req.body.location) profileFields.location = req.body.location;
-    if (req.body.bio) profileFields.bio = req.body.bio;
-    if (req.body.status) profileFields.status = req.body.status;
-    if (req.body.githubUserName)
-      profileFields.githubUserName = req.body.githubUserName;
+    profileFields.handle = req.body.handle;
+    profileFields.company = req.body.company;
+    profileFields.website = req.body.website;
+    profileFields.location = req.body.location;
+    profileFields.bio = req.body.bio;
+    profileFields.status = req.body.status;
+    profileFields.githubUserName = req.body.githubUserName;
 
     // skills - split into array
     if (typeof req.body.skills !== "undefined") {
@@ -137,11 +136,11 @@ router.post(
 
     // social
     profileFields.social = {};
-    if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
-    if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
-    if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
-    if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
-    if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+    profileFields.social.youtube = req.body.youtube;
+    profileFields.social.twitter = req.body.twitter;
+    profileFields.social.facebook = req.body.facebook;
+    profileFields.social.linkedin = req.body.linkedin;
+    profileFields.social.instagram = req.body.instagram;
 
     console.log("profile fields: ", profileFields);
     Profile.findOne({ user: req.user.id })
@@ -151,7 +150,7 @@ router.post(
           Profile.findOneAndUpdate(
             { user: req.user.id },
             { $set: profileFields },
-            { new: true }
+            { useFindAndModify: false }
           )
             .then((profile) => res.json(profile))
             .catch((err) => res.status(404).json(err));

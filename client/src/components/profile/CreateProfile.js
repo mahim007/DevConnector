@@ -49,14 +49,7 @@ class CreateProfile extends Component {
     if (!isEmpty(nextProps.profile.profile)) {
       const { profile } = nextProps.profile;
 
-      let skills = "";
-      profile.skills.map((skill) => {
-        if (skills.length > 0) {
-          skills += ",";
-        }
-
-        skills += skill;
-      });
+      let skills = profile.skills.join(",");
 
       profile.social = profile.social || {};
 

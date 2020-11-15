@@ -3,6 +3,7 @@ import {
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
   GET_PROFILE,
+  GET_PROFILES,
   PROFILE_LOADING,
   SET_CURRENT_USER,
 } from "./types";
@@ -24,10 +25,83 @@ export const getCurrentProfile = () => (dispatch) => {
     );
 };
 
+export const getProfiles = () => (dispatch) => {
+  dispatch(setProfileLoading());
+  Axios.get("/api/profile/all")
+    .then((res) =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: null,
+      })
+    );
+};
+
 export const createProfile = (profileData, history) => (dispatch) => {
   Axios.post("/api/profile", profileData)
     .then((res) => history.push("/dashboard"))
     .catch((err) => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
+
+export const addExperience = (expData, history) => (dispatch) => {
+  Axios.post("/api/profile/experience", expData)
+    .then((res) => history.push("/dashboard"))
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
+export const addEducation = (eduData, history) => (dispatch) => {
+  Axios.post("/api/profile/education", eduData)
+    .then((res) => history.push("/dashboard"))
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
+export const deleteExperience = (expId) => (dispatch) => {
+  console.log("deleting experience: ", expId);
+  Axios.delete(`/api/profile/experience/${expId}`)
+    .then((res) =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
+export const deleteEducation = (eduId) => (dispatch) => {
+  console.log("deleting education: ", eduId);
+  Axios.delete(`/api/profile/education/${eduId}`)
+    .then((res) =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
 };
 
 export const deleteAccount = () => (dispatch) => {

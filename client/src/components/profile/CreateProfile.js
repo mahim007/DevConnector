@@ -6,7 +6,7 @@ import SelectListGroup from "../common/SelectListGroups";
 import TextAreaFieldGroups from "../common/TextAreaFieldGroups";
 import InputGroups from "../common/InputGroups";
 import { createProfile, getCurrentProfile } from "../../actions/profileActions";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import isEmpty from "../../validation/is-empty";
 
 class CreateProfile extends Component {
@@ -172,6 +172,9 @@ class CreateProfile extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
+              <Link to="/dashboard" className="btn btn-light">
+                Go Back
+              </Link>
               <h1 className="display-4 text-center">Create Your Profile</h1>
               <p className="lead text-center">
                 Let's get some information to make your profile stand out

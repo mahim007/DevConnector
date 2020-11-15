@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroups from "../common/TextFieldGroups";
 import TextAreaFieldGroups from "../common/TextAreaFieldGroups";
-import { Timestamp } from "mongodb";
+import { addExperience } from "../../actions/profileActions";
 
 class AddExperience extends Component {
   constructor() {
@@ -29,16 +29,40 @@ class AddExperience extends Component {
   onChange(e) {
     e.preventDefault();
     console.log(e.target.name, e.target.value);
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   }
 
   onCheck(e) {
-    e.preventDefault();
+    //e.preventDefault();
     console.log(e.target.name, e.target.value);
+    this.setState({
+      current: !this.state.current,
+      disabled: !this.state.current,
+    });
   }
 
   onSubmit(e) {
     e.preventDefault();
     console.log(e.target.name, e.target.value);
+    const expData = {
+      company: this.state.company,
+      title: this.state.title,
+      location: this.state.location,
+      from: this.state.from,
+      to: this.state.to,
+      current: this.state.current,
+      description: this.state.description,
+    };
+
+    this.props.addExperience(expData, this.props.history);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors !== this.state.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   render() {
@@ -135,6 +159,7 @@ class AddExperience extends Component {
 AddExperience.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  addExperience: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -142,7 +167,9 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  addExperience,
+};
 
 export default connect(
   mapStateToProps,

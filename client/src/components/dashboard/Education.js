@@ -6,7 +6,6 @@ import { deleteEducation } from "../../actions/profileActions";
 
 class Education extends Component {
   onClickDelete(id) {
-    console.log("on click delete getting called inside Experience component");
     this.props.deleteEducation(id);
   }
   render() {
@@ -46,6 +45,11 @@ class Education extends Component {
     );
   }
 }
+
+Education.propTypes = {
+  education: PropTypes.array.isRequired,
+  deleteEducation: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = {
   deleteEducation,

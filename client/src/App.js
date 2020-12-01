@@ -18,6 +18,9 @@ import CreateProfile from "./components/profile/CreateProfile";
 import AddExperience from "./components/info/AddExperience";
 import AddEducation from "./components/info/AddEducation";
 import Profiles from "./components/profiles/Profiles";
+import Profile from "./components/profile/Profile";
+import ProfileNotFound from "./components/profile/ProfileNotFound";
+import Posts from "./components/posts/Posts";
 
 if (localStorage.getItem("jwtToken")) {
   setAuthToken(localStorage.getItem("jwtToken"));
@@ -43,6 +46,8 @@ function App() {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/profiles" component={Profiles} />
+            <Route exact path="/profile/:handle" component={Profile} />
+            <Route exact path="/not-found" component={ProfileNotFound} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute
@@ -65,6 +70,7 @@ function App() {
                 path="/add-education"
                 component={AddEducation}
               />
+              <PrivateRoute exact path="/feed" component={Posts} />
             </Switch>
           </div>
           <Footer />

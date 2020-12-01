@@ -1,0 +1,12 @@
+import React from "react";
+
+function ProfileNotFound() {
+  return (
+    <div>
+      <h1 className="dispaly-4">Page Not Found</h1>
+      <p>Sorry, this page does not exist</p>
+    </div>
+  );
+}
+
+export default ProfileNotFound;

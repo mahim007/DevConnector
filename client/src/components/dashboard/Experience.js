@@ -6,9 +6,9 @@ import { deleteExperience } from "../../actions/profileActions";
 
 class Experience extends Component {
   onClickDelete(id) {
-    console.log("on click delete getting called inside Experience component");
     this.props.deleteExperience(id);
   }
+
   render() {
     const experience = this.props.experience.map((exp) => (
       <tr key={exp._id}>
@@ -28,6 +28,7 @@ class Experience extends Component {
         </td>
       </tr>
     ));
+
     return (
       <div>
         <h4 className="mb-4">Experience Credentials</h4>
@@ -46,6 +47,11 @@ class Experience extends Component {
     );
   }
 }
+
+Experience.propTypes = {
+  experience: PropTypes.array.isRequired,
+  deleteExperience: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = {
   deleteExperience,

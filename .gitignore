@@ -114,3 +114,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+#project specific files to be added in gitignore
+/config/keys_dev.js

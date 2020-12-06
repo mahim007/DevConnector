@@ -1,5 +1,14 @@
 import Axios from "axios";
-import { ADD_POST, GET_ERRORS, GET_POSTS, POST_LOADING } from "./types";
+import {
+  ADD_POST,
+  DELETE_POST,
+  GET_ERRORS,
+  GET_POST,
+  GET_POSTS,
+  LIKE_POST,
+  POST_LOADING,
+  UNLIKE_POST,
+} from "./types";
 
 export const addPost = (postData) => (dispatch) => {
   Axios.post("/api/posts", postData)
@@ -13,6 +22,23 @@ export const addPost = (postData) => (dispatch) => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data,
+      })
+    );
+};
+
+export const getPost = (id) => (dispatch) => {
+  dispatch(setPostLoading());
+  Axios.get(`/api/posts/${id}`)
+    .then((res) =>
+      dispatch({
+        type: GET_POST,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_POSTS,
+        payload: null,
       })
     );
 };
@@ -34,8 +60,92 @@ export const getPosts = () => (dispatch) => {
     );
 };
 
+export const deletePost = (id) => (dispatch) => {
+  Axios.delete(`/api/posts/${id}`)
+    .then((res) =>
+      dispatch({
+        type: DELETE_POST,
+        payload: id,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
+export const addLike = (id) => (dispatch) => {
+  Axios.post(`/api/posts/like/${id}`)
+    .then((res) =>
+      dispatch({
+        type: LIKE_POST,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
+export const removeLike = (id) => (dispatch) => {
+  Axios.post(`/api/posts/unlike/${id}`)
+    .then((res) =>
+      dispatch({
+        type: UNLIKE_POST,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
 export const setPostLoading = () => {
   return {
     type: POST_LOADING,
   };
+};
+
+export const addComment = (id, comment) => (dispatch) => {
+  Axios.post(`/api/posts/comment/${id}`, comment)
+    .then((res) => {
+      dispatch({
+        type: GET_POST,
+        payload: res.data,
+      });
+      dispatch({
+        type: GET_ERRORS,
+        payload: {},
+      });
+    })
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
+
+export const deleteComment = (postId, commentId) => (dispatch) => {
+  Axios.delete(`/api/posts/comment/${postId}/${commentId}`)
+    .then((res) =>
+      dispatch({
+        type: GET_POST,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
 };
